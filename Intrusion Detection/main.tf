@@ -136,12 +136,16 @@ resource "aws_instance" "instance_1" {
   subnet_id              = aws_subnet.subnet1.id
   user_data              = base64encode(file("userdata1.sh"))
   iam_instance_profile   = aws_iam_instance_profile.profile.name
+  
+  # Connecting to EC2 using ssh
   connection {
     type = "ssh"
     user = "ubuntu"
     host = self.public_ip
     private_key = file("~/.ssh/rsa_id")
   }
+
+  #Using provisiner for executing the commands after creating EC2
   provisioner "remote-exec" {
     inline = [ 
         "sudo apt update -y",
