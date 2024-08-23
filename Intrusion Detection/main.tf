@@ -134,7 +134,6 @@ resource "aws_instance" "instance_1" {
   instance_type          = var.instance-type
   vpc_security_group_ids = [aws_security_group.SG.id]
   subnet_id              = aws_subnet.subnet1.id
-  user_data              = base64encode(file("userdata1.sh"))
   iam_instance_profile   = aws_iam_instance_profile.profile.name
   
   # Connecting to EC2 using ssh
@@ -163,7 +162,6 @@ resource "aws_instance" "instance_2" {
   instance_type          = var.instance-type
   vpc_security_group_ids = [aws_security_group.SG.id]
   subnet_id              = aws_subnet.subnet2.id
-  user_data              = base64encode(file("userdata2.sh"))
   iam_instance_profile   = aws_iam_instance_profile.profile.name
 
   connection {
@@ -175,7 +173,7 @@ resource "aws_instance" "instance_2" {
   provisioner "remote-exec" {
     inline = [ 
         "sudo apt update -y",
-        "sudo apt install docker.io",
+        "sudo apt install docker.io -y",
         "sudo systemctl enable docker",
         "sudo systemctl start docker",
         "sudo docker pull sumanthreddy1242/intrusion-detection",
